@@ -1,872 +1,1425 @@
+
 <!DOCTYPE html>
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#10182c">
+<meta name="theme-color" content="#101b18">
 <title>অংক শিখি</title>
 
 <style>
 :root{
- --bg:#10182c;
- --panel:#1b2943;
- --panel2:#243653;
- --text:#f4f7ff;
- --muted:#aebbd2;
- --primary:#718cff;
- --accent:#20c997;
- --danger:#ff647c;
- --border:#ffffff18;
+  --bg:#101b18;
+  --panel:#1b2b25;
+  --panel2:#23372f;
+  --text:#f4f8f5;
+  --muted:#a9bdb2;
+  --primary:#55a987;
+  --accent:#20c997;
+  --danger:#ff647c;
+  --border:#ffffff20;
 }
 *{box-sizing:border-box}
 body{
- margin:0;background:var(--bg);color:var(--text);
- font-family:Arial,"Noto Sans Bengali",sans-serif;
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial,"Noto Sans Bengali",sans-serif;
 }
 body.light{
- --bg:#edf2fc;--panel:#fff;--panel2:#e5ebf7;
- --text:#17233a;--muted:#65738c;--border:#17233a20;
+  --bg:#edf4ef;
+  --panel:#ffffff;
+  --panel2:#e6eee9;
+  --text:#172b22;
+  --muted:#61766a;
+  --border:#172b2220;
 }
 button,input,select{font:inherit}
 button{
- cursor:pointer;padding:12px;border:0;border-radius:11px;
- background:var(--primary);color:white;font-weight:bold;
+  cursor:pointer;
+  padding:12px;
+  border:0;
+  border-radius:11px;
+  background:var(--primary);
+  color:white;
+  font-weight:bold;
 }
-button:disabled{opacity:.4}
+button:disabled{opacity:.45;cursor:not-allowed}
+input:not([type="checkbox"]),select{
+  width:100%;
+  padding:12px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:var(--panel2);
+  color:var(--text);
+  margin:6px 0 12px;
+}
+input[type="checkbox"]{
+  width:20px;
+  height:20px;
+  accent-color:var(--accent);
+}
+label{display:block;color:var(--muted);font-size:13px}
 header{
- background:linear-gradient(130deg,#243e83,#7547a8);
- padding:24px 16px;text-align:center;
+  background:linear-gradient(130deg,#214d3c,#286b55);
+  padding:23px 15px;
+  text-align:center;
 }
-header h1{margin:0;font-size:30px}
-header p{margin:8px 0 0;color:#e0e7ff}
-.container{max-width:950px;margin:auto;padding:14px}
+header h1{margin:0;font-size:29px}
+header p{margin:8px 0 0;color:#d9f5e8}
+.container{max-width:850px;margin:auto;padding:14px}
 .card{
- background:var(--panel);border:1px solid var(--border);
- border-radius:18px;padding:17px;margin-bottom:15px;
- box-shadow:0 5px 18px #0002;
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:17px;
+  padding:16px;
+  margin-bottom:14px;
+  box-shadow:0 5px 18px #0002;
 }
 .row{display:flex;gap:10px;flex-wrap:wrap}
 .row>*{flex:1;min-width:0}
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .stat{
- background:var(--panel2);padding:14px;
- border-radius:13px;text-align:center;
+  background:var(--panel2);
+  padding:13px;
+  border-radius:12px;
+  text-align:center;
+  color:var(--muted);
 }
-.stat strong{display:block;font-size:24px;margin-top:7px}
-input,select{
- width:100%;padding:12px;border-radius:10px;
- border:1px solid var(--border);
- background:var(--panel2);color:var(--text);
- margin:6px 0 12px;
+.stat strong{
+  display:block;
+  color:var(--text);
+  font-size:23px;
+  margin-top:6px;
 }
 .secondary{background:var(--panel2);color:var(--text)}
-.green{background:var(--accent);color:#092b25}
+.green{background:var(--accent);color:#082d22}
 .red{background:var(--danger)}
 .full{width:100%}
+.hidden{display:none!important}
 .cover{
- height:115px;border-radius:14px;
- background:linear-gradient(120deg,#385ed0,#a34fc2);
- background-position:center;background-size:cover;
+  height:115px;
+  border-radius:13px;
+  background:linear-gradient(120deg,#286b55,#668eaf);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:23px;
+  font-weight:bold;
+  cursor:pointer;
 }
-.profile{display:flex;align-items:center;gap:13px;margin-top:13px}
+.profile{display:flex;align-items:center;gap:13px;margin:14px 0}
 .avatar{
- width:66px;height:66px;border-radius:50%;
- object-fit:cover;background:var(--panel2);
- border:3px solid var(--primary);
+  width:68px;height:68px;
+  border-radius:50%;
+  background:var(--panel2);
+  border:3px solid var(--primary);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:30px;
+  background-position:center;
+  background-size:cover;
+  cursor:pointer;
+  flex-shrink:0;
+  touch-action:pan-y;
 }
 .progress{
- height:12px;background:var(--panel2);
- border-radius:20px;overflow:hidden;
+  height:11px;
+  background:var(--panel2);
+  border-radius:20px;
+  overflow:hidden;
 }
 .progress div{
- height:100%;width:0;background:var(--accent);
- transition:width .3s;
+  height:100%;
+  width:0;
+  background:var(--accent);
+  transition:width .25s;
 }
-.question{
- text-align:center;font-size:28px;font-weight:800;
- padding:24px 5px;line-height:1.6;
-}
-.options{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.option{
- background:var(--panel2);color:var(--text);
- border:2px solid transparent;text-align:left;min-height:55px;
-}
-.option.selected{border-color:var(--primary)}
-.option.correct{background:#147c5c;color:white}
-.option.wrong{background:#a52d4b;color:white}
-.option:disabled{opacity:1}
-.feedback{text-align:center;font-weight:bold;min-height:27px;margin:12px}
-.explain{
- background:var(--panel2);padding:13px;
- border-radius:12px;margin-top:12px;line-height:1.7;
-}
-.badge{
- display:inline-block;background:var(--panel2);
- padding:7px 11px;border-radius:20px;font-size:12px;margin:3px;
-}
-.history-item{
- padding:12px 0;border-bottom:1px solid var(--border);
- line-height:1.6;
-}
-.hidden{display:none!important}
 .nav{
- display:grid;grid-template-columns:repeat(4,1fr);
- gap:7px;margin-bottom:14px;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:7px;
+  margin-bottom:14px;
 }
 .nav button{font-size:12px;padding:11px 4px}
 .section{display:none}
 .section.active{display:block}
-footer{text-align:center;color:var(--muted);padding:22px;font-size:12px}
+.question{
+  text-align:center;
+  font-size:27px;
+  font-weight:bold;
+  padding:22px 5px;
+  line-height:1.6;
+}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.answer-btn{
+  background:var(--panel2);
+  color:var(--text);
+  border:2px solid transparent;
+  min-height:52px;
+}
+.answer-btn.correct{background:#147c5c;color:white}
+.answer-btn.wrong{background:#a52d4b;color:white}
+.answer-btn:disabled{opacity:1}
+.feedback{
+  text-align:center;
+  min-height:28px;
+  margin:12px 0;
+  font-weight:bold;
+  line-height:1.7;
+}
+.feedback.good{color:#20c997}
+.feedback.bad{color:#ff647c}
+.explanation{
+  color:var(--muted);
+  text-align:center;
+  line-height:1.7;
+  margin:8px 0 14px;
+}
+.badge{
+  display:inline-block;
+  padding:7px 10px;
+  border-radius:20px;
+  background:var(--panel2);
+  font-size:12px;
+  margin:3px;
+}
+.history-item{
+  padding:11px 0;
+  border-bottom:1px solid var(--border);
+  line-height:1.6;
+}
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:20;
+  background:#000b;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+}
+.modal.show{display:flex}
+.modal-box{
+  width:100%;
+  max-width:420px;
+  max-height:85vh;
+  overflow:auto;
+  background:var(--panel);
+  color:var(--text);
+  border-radius:16px;
+  padding:18px;
+}
+.emoji-grid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:8px;
+  margin:12px 0;
+}
+.emoji-grid button{
+  font-size:24px;
+  background:var(--panel2);
+  padding:10px 4px;
+}
+.viewer{
+  max-width:600px;
+  width:100%;
+  text-align:center;
+}
+.viewer img{
+  max-width:100%;
+  max-height:75vh;
+  object-fit:contain;
+  border-radius:12px;
+}
+footer{text-align:center;color:var(--muted);padding:20px;font-size:12px}
 @media(max-width:480px){
- .options{grid-template-columns:1fr}
- .question{font-size:23px}
- .nav button{font-size:10px}
+  .question{font-size:23px}
+  .options{grid-template-columns:1fr}
+  .nav button{font-size:10px}
 }
 </style>
 </head>
 
 <body>
 <header>
- <h1>🔢 অংক শিখি</h1>
- <p id="tagline">শিখব অংক, জিতব জ্ঞান!</p>
+  <h1>🔢 অংক শিখি</h1>
+  <p>শিখব অংক, জিতব জ্ঞান!</p>
 </header>
 
 <main class="container">
 
 <section class="card">
- <div class="cover" id="cover"></div>
- <div class="profile">
-  <img id="avatar" class="avatar"
-  src="https://placehold.co/100x100/354b75/ffffff?text=AS">
-  <div>
-   <h3 id="playerName">Player</h3>
-   <div class="muted" id="playerLevel">Level 1</div>
-   <span class="badge">⭐ Math Learner</span>
-  </div>
- </div>
+  <div class="cover" id="coverView">📘 অংক শিখি</div>
 
- <div class="row">
-  <button class="secondary" onclick="editName()">✏️ নাম পরিবর্তন</button>
-  <button class="secondary" onclick="toggleTheme()">🌙 Theme</button>
- </div>
+  <div class="profile">
+    <div class="avatar" id="avatar">👤</div>
+    <div>
+      <h3 id="profileName">শিক্ষার্থী</h3>
+      <div id="profileLevel">Level 1</div>
+      <span class="badge">⭐ Math Learner</span>
+    </div>
+  </div>
 
- <div class="row">
-  <div>
-   <label>Profile Picture</label>
-   <input type="file" accept="image/*"
-   onchange="uploadImage(event,'avatar')">
+  <div class="grid">
+    <div class="stat">বর্তমান Level<strong id="statLevel">1</strong></div>
+    <div class="stat">সঠিক উত্তর<strong id="statCorrect">0</strong></div>
+    <div class="stat">Success Rate<strong id="statRate">0%</strong></div>
   </div>
-  <div>
-   <label>Cover Picture</label>
-   <input type="file" accept="image/*"
-   onchange="uploadImage(event,'cover')">
-  </div>
- </div>
 </section>
 
 <nav class="nav">
- <button onclick="showSection('home')">🏠 Home</button>
- <button onclick="showSection('game')">🎮 Play</button>
- <button onclick="showSection('stats')">📊 Progress</button>
- <button onclick="showSection('settings')">⚙️ Settings</button>
+  <button onclick="showSection('home')">🏠 Home</button>
+  <button onclick="showSection('game')">🎮 Play</button>
+  <button onclick="showSection('stats')">📊 Progress</button>
+  <button onclick="showSection('settings')">⚙️ Settings</button>
 </nav>
 
 <section id="home" class="section active">
- <div class="card">
-  <h2>স্বাগতম! 🎉</h2>
-  <p>প্রতিদিন অনুশীলন করো, নতুন জ্ঞান অর্জন করো।</p>
-  <div class="grid">
-   <div class="stat">বর্তমান Level<strong id="homeLevel">1</strong></div>
-   <div class="stat">মোট Score<strong id="homeScore">0</strong></div>
-   <div class="stat">সঠিক উত্তর<strong id="homeCorrect">0</strong></div>
-   <div class="stat">Success Rate<strong id="homeRate">0%</strong></div>
+  <div class="card">
+    <h2 data-bn="স্বাগতম! 🎉" data-en="Welcome! 🎉">স্বাগতম! 🎉</h2>
+    <p data-bn="প্রতিদিন অনুশীলন করো, নতুন জ্ঞান অর্জন করো।"
+       data-en="Practice every day and gain new knowledge.">
+      প্রতিদিন অনুশীলন করো, নতুন জ্ঞান অর্জন করো।
+    </p>
+
+    <div class="row">
+      <div class="stat">মোট Score<strong id="homeScore">0</strong></div>
+      <div class="stat">মোট চেষ্টা<strong id="homeAttempts">0</strong></div>
+    </div>
+
+    <button class="full green" onclick="showSection('game')">
+      🚀 খেলা শুরু করো
+    </button>
   </div>
-  <p>১০,০০০ Level-এর অগ্রগতি</p>
-  <div class="progress"><div id="progressBar"></div></div>
-  <p id="progressText">0 / 10000 completed</p>
-  <button class="full green" onclick="showSection('game')">🚀 খেলা শুরু করো</button>
- </div>
- <div class="card">
-  <h3>📅 আজকের অনুশীলন</h3>
-  <p id="dailyGoal">আজ ১০টি প্রশ্নের উত্তর দেওয়ার চেষ্টা করো।</p>
-  <div class="progress"><div id="dailyBar"></div></div>
- </div>
+
+  <div class="card">
+    <h3>📅 আজকের মিশন</h3>
+    <p id="missionText">আজ ৫টি প্রশ্নের উত্তর দাও</p>
+    <div class="progress"><div id="missionFill"></div></div>
+    <p id="missionCount">0/5</p>
+  </div>
 </section>
 
 <section id="game" class="section">
- <div class="card">
-  <h2>🎮 Math Challenge</h2>
+  <div class="card">
+    <h2>🎮 Math Challenge</h2>
 
-  <div class="row">
-   <div>
-    <label>শ্রেণি</label>
-    <select id="classBand">
-     <option value="primary">Class 1–5</option>
-     <option value="secondary">Class 6–10</option>
-     <option value="higher">Class 11–12</option>
+    <label data-bn="শ্রেণি" data-en="Class">শ্রেণি</label>
+    <select id="classSelect">
+      <option value="primary">Class 1–5</option>
+      <option value="secondary">Class 6–10</option>
+      <option value="higher">Class 11–12</option>
     </select>
-   </div>
-   <div>
-    <label>কঠিনতা / Difficulty</label>
-    <select id="difficulty">
-     <option value="easy">Easy</option>
-     <option value="medium">Medium</option>
-     <option value="hard">Hard</option>
+
+    <label data-bn="গণিতের বিভাগ" data-en="Math Category">গণিতের বিভাগ</label>
+    <select id="categorySelect">
+      <option value="arithmetic">পাটিগণিত</option>
+      <option value="algebra">বীজগণিত</option>
+      <option value="geometry">জ্যামিতি</option>
+      <option value="mixed">সব একসাথে</option>
     </select>
-   </div>
+
+    <label data-bn="কঠিনতা / Difficulty" data-en="Difficulty">কঠিনতা / Difficulty</label>
+    <select id="difficultySelect">
+      <option value="easy">Easy</option>
+      <option value="medium">Medium</option>
+      <option value="hard">Hard</option>
+    </select>
+
+    <button class="full" id="startBtn">খেলা শুরু করো</button>
   </div>
 
-  <label>গণিতের বিভাগ</label>
-  <select id="category">
-   <option value="arithmetic">পাটিগণিত</option>
-   <option value="algebra">বীজগণিত</option>
-   <option value="geometry">জ্যামিতি</option>
-   <option value="mixed">সব একসাথে</option>
-  </select>
+  <div class="card hidden" id="gamePanel">
+    <div class="row">
+      <span class="badge" id="gameLevel">Level 1</span>
+      <span class="badge">Score: <span id="gameScore">0</span></span>
+    </div>
 
-  <button class="secondary full" onclick="applySettings()">পরিবর্তন প্রয়োগ করো</button>
+    <div class="progress"><div id="progressFill"></div></div>
+    <p id="questionCount">প্রশ্ন 1/5</p>
 
-  <div class="row">
-   <span class="badge" id="levelBadge">Level 1</span>
-   <span class="badge" id="categoryBadge">পাটিগণিত</span>
-   <span class="badge" id="difficultyBadge">Easy</span>
+    <div class="question" id="questionText">প্রস্তুত হও!</div>
+    <div class="options" id="answers"></div>
+    <div class="feedback" id="feedback"></div>
+    <div class="explanation hidden" id="explanation"></div>
+
+    <button class="full green hidden" id="nextBtn" disabled>
+      পরবর্তী প্রশ্ন ➜
+    </button>
   </div>
-
-  <div class="question" id="question">প্রস্তুত হও!</div>
-  <p>সঠিক উত্তরটি নির্বাচন করো:</p>
-  <div class="options" id="options"></div>
-  <div class="feedback" id="feedback"></div>
-
-  <button id="explainButton" class="secondary full"
-  onclick="toggleExplanation()" disabled>
-  📖 সঠিক উত্তর ও ব্যাখ্যা দেখুন</button>
-
-  <div id="explanation" class="explain hidden">
-   <strong id="correctAnswer"></strong>
-   <p id="explanationText"></p>
-  </div>
-
-  <div class="row" style="margin-top:14px">
-   <button class="green" id="nextButton"
-   onclick="nextQuestion()" disabled>পরবর্তী প্রশ্ন ➜</button>
-   <button class="secondary" onclick="newQuestion()">নতুন প্রশ্ন</button>
-  </div>
- </div>
 </section>
 
 <section id="stats" class="section">
- <div class="card">
-  <h2>📊 তোমার অগ্রগতি</h2>
-  <div class="grid">
-   <div class="stat">মোট চেষ্টা<strong id="attempts">0</strong></div>
-   <div class="stat">সঠিক উত্তর<strong id="correctCount">0</strong></div>
-   <div class="stat">ভুল উত্তর<strong id="wrongCount">0</strong></div>
-   <div class="stat">সর্বোচ্চ Score<strong id="bestScore">0</strong></div>
+  <div class="card">
+    <h2>📊 তোমার অগ্রগতি</h2>
+    <div class="grid">
+      <div class="stat">সঠিক উত্তর<strong id="statsCorrect">0</strong></div>
+      <div class="stat">ভুল উত্তর<strong id="statsWrong">0</strong></div>
+      <div class="stat">মোট চেষ্টা<strong id="statsTotal">0</strong></div>
+      <div class="stat">Success Rate<strong id="statsRate">0%</strong></div>
+    </div>
   </div>
- </div>
- <div class="card">
-  <h3>🏆 Achievement</h3>
-  <div id="achievements"></div>
- </div>
- <div class="card">
-  <h3>📚 প্রশ্নের ইতিহাস</h3>
-  <div id="history"></div>
-  <button class="red full" onclick="clearHistory()">History Clear</button>
- </div>
+
+  <div class="card">
+    <h3>🏆 Achievement</h3>
+    <div id="achievements"></div>
+  </div>
+
+  <div class="card">
+    <h3>📚 প্রশ্নের ইতিহাস</h3>
+    <div id="historyList"></div>
+  </div>
 </section>
 
 <section id="settings" class="section">
- <div class="card">
-  <h2>⚙️ Settings</h2>
-  <label>Language / ভাষা</label>
-  <select id="language" onchange="changeLanguage()">
-   <option value="bn">বাংলা</option>
-   <option value="en">English</option>
-  </select>
-  <label>Sound Effect</label>
-  <select id="sound">
-   <option value="on">ON</option>
-   <option value="off">OFF</option>
-  </select>
- </div>
- <div class="card">
-  <h3>💾 Backup & Restore</h3>
-  <button class="full" onclick="exportBackup()">⬇️ Backup Download</button>
-  <input type="file" id="backupFile" accept=".json">
-  <button class="secondary full" onclick="importBackup()">Restore Backup</button>
- </div>
- <div class="card">
-  <h3>🔐 Privacy & Security</h3>
-  <p class="muted">তথ্য এই ডিভাইসের Local Storage-এ থাকে।</p>
-  <button class="red full" onclick="resetData()">সব ডেটা Reset</button>
- </div>
+  <div class="card">
+    <h2>⚙️ Settings</h2>
+
+    <label>Language / ভাষা</label>
+    <select id="languageSelect">
+      <option value="bn">বাংলা</option>
+      <option value="en">English</option>
+    </select>
+
+    <label>Sound Effect</label>
+    <input type="checkbox" id="soundToggle" checked>
+
+    <button class="secondary full" id="settingsThemeBtn">থিম পরিবর্তন</button>
+  </div>
+
+  <div class="card">
+    <h3>💾 Backup & Restore</h3>
+    <button class="full" id="backupBtn">⬇️ Backup Download</button>
+    <input type="file" id="restoreInput" accept=".json,application/json" class="hidden">
+    <button class="secondary full" id="restoreBtn">Restore Backup</button>
+  </div>
+
+  <div class="card">
+    <h3>🔐 Privacy & Security</h3>
+    <p>তথ্য এই ডিভাইসেই সংরক্ষিত থাকবে।</p>
+  </div>
+
+  <button class="secondary full" id="closeSettingsBtn">ফিরে যাও</button>
 </section>
+
+<div class="modal" id="nameModal">
+  <div class="modal-box">
+    <h3>নাম পরিবর্তন</h3>
+    <input id="nameInput" maxlength="20" placeholder="তোমার নাম">
+    <div class="row">
+      <button class="green" id="saveNameBtn">Save</button>
+      <button class="secondary" id="cancelNameBtn">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="avatarModal">
+  <div class="modal-box">
+    <h3>প্রোফাইল ছবি নির্বাচন</h3>
+    <div class="emoji-grid" id="emojiGrid"></div>
+    <button class="full" id="galleryBtn">🖼️ Gallery থেকে ছবি</button>
+    <input type="file" id="avatarInput" accept="image/*" class="hidden">
+    <button class="secondary full" id="closeAvatarBtn">বন্ধ করো</button>
+  </div>
+</div>
+
+<div class="modal" id="imageViewer">
+  <div class="viewer" id="viewerContent"></div>
+</div>
+
+<div class="modal" id="messageModal">
+  <div class="modal-box">
+    <h3 id="messageTitle">বার্তা</h3>
+    <p id="messageText"></p>
+    <button class="full" id="messageOkBtn">ঠিক আছে</button>
+  </div>
+</div>
+
 </main>
 
 <footer>অংক শিখি © 2026</footer>
+
 <script>
+
 "use strict";
 
-const TOTAL_LEVELS=10000;
-const STORAGE_KEY="ongkoShikhiData";
+const STORAGE_KEY = "ongkoShikhiData";
+const MAX_LEVEL = 10000;
 
-const defaults={
- name:"Player",avatar:"",cover:"",
- level:1,score:0,correct:0,attempts:0,
- completed:[],history:[],theme:"dark",
- dailyCount:0,dailyDate:new Date().toDateString()
+const defaultData = {
+  name: "শিক্ষার্থী",
+  avatar: "",
+  avatarEmoji: "👤",
+  level: 1,
+  correct: 0,
+  wrong: 0,
+  total: 0,
+  score: 0,
+  sound: true,
+  light: false,
+  language: "bn",
+  mission: 0,
+  missionDate: new Date().toDateString(),
+  history: [],
+  completed: []
 };
 
-function loadData(){
- try{
-  const saved=JSON.parse(localStorage.getItem(STORAGE_KEY));
-  return saved?{...defaults,...saved}:{...defaults};
- }catch(e){return {...defaults};}
+function $(id) {
+  return document.getElementById(id);
 }
 
-let data=loadData();
-let currentQuestion=null;
-let selectedAnswer=null;
-let answered=false;
+function loadData() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
 
-function el(id){return document.getElementById(id);}
+    if (!saved || typeof saved !== "object") {
+      return {...defaultData};
+    }
 
-function save(){
- try{
-  localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
-  return true;
- }catch(e){
-  alert("ডেটা সেভ করা যাচ্ছে না।");
-  return false;
- }
+    return {
+      ...defaultData,
+      ...saved,
+      level: Math.max(1, Math.min(MAX_LEVEL, Number(saved.level) || 1)),
+      correct: Math.max(0, Number(saved.correct) || 0),
+      wrong: Math.max(0, Number(saved.wrong) || 0),
+      total: Math.max(0, Number(saved.total) || 0),
+      score: Math.max(0, Number(saved.score) || 0),
+      history: Array.isArray(saved.history) ? saved.history : [],
+      completed: Array.isArray(saved.completed) ? saved.completed : []
+    };
+  } catch (error) {
+    return {...defaultData};
+  }
 }
 
-function showSection(id){
- document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
- el(id).classList.add("active");
- if(id==="stats"){renderHistory();renderAchievements();}
+let data = loadData();
+
+let questionIndex = 0;
+let score = 0;
+let answered = false;
+let currentQuestion = null;
+let previousSection = "home";
+let longPressTimer = null;
+let longPressTriggered = false;
+
+function saveData() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    return true;
+  } catch (error) {
+    console.error("Storage error:", error);
+    return false;
+  }
 }
 
-function updateDashboard(){
- const rate=data.attempts?Math.round(data.correct/data.attempts*100):0;
- el("playerName").textContent=data.name;
- el("playerLevel").textContent="Level "+data.level;
- el("homeLevel").textContent=data.level;
- el("homeScore").textContent=data.score;
- el("homeCorrect").textContent=data.correct;
- el("homeRate").textContent=rate+"%";
- el("progressBar").style.width=Math.min(data.completed.length/TOTAL_LEVELS*100,100)+"%";
- el("progressText").textContent=data.completed.length+" / "+TOTAL_LEVELS+" completed";
- el("attempts").textContent=data.attempts;
- el("correctCount").textContent=data.correct;
- el("wrongCount").textContent=data.attempts-data.correct;
- el("bestScore").textContent=data.score;
- el("dailyGoal").textContent="আজকের প্রশ্ন: "+data.dailyCount+" / 10";
- el("dailyBar").style.width=Math.min(data.dailyCount/10*100,100)+"%";
-
- if(data.avatar)el("avatar").src=data.avatar;
- if(data.cover)el("cover").style.backgroundImage="url("+data.cover+")";
- document.body.classList.toggle("light",data.theme==="light");
+function text(bn, en) {
+  return data.language === "en" ? en : bn;
 }
 
-function rand(min,max){
- return Math.floor(Math.random()*(max-min+1))+min;
+function showMessage(title, message) {
+  $("messageTitle").textContent = title;
+  $("messageText").textContent = message;
+  $("messageModal").classList.add("show");
 }
 
-function shuffle(array){
- for(let i=array.length-1;i>0;i--){
-  const j=rand(0,i);
-  [array[i],array[j]]=[array[j],array[i]];
- }
- return array;
+function closeMessage() {
+  $("messageModal").classList.remove("show");
 }
 
-/* Difficulty and class now control actual question range */
-function settings(){
- const band=el("classBand").value;
- const difficulty=el("difficulty").value;
+function showSection(id) {
+  const target = $(id);
+  if (!target) return;
 
- let base=20;
- if(band==="secondary")base=100;
- if(band==="higher")base=500;
+  const active = document.querySelector(".section.active");
 
- let multiplier=1;
- if(difficulty==="medium")multiplier=3;
- if(difficulty==="hard")multiplier=8;
+  if (id !== "settings" && active && active.id !== "settings") {
+    previousSection = active.id;
+  }
 
- return {
-  max:base*multiplier,
-  complexity:difficulty
- };
+  if (id === "settings" && active && active.id !== "settings") {
+    previousSection = active.id;
+  }
+
+  document.querySelectorAll(".section").forEach(section => {
+    section.classList.remove("active");
+  });
+
+  target.classList.add("active");
+
+  if (id === "stats") {
+    updateStats();
+    updateHistory();
+    updateAchievements();
+  }
 }
 
-function applySettings(){
- newQuestion();
+function updateProfile() {
+  $("profileName").textContent = data.name;
+  $("profileLevel").textContent = text("লেভেল ", "Level ") + data.level;
+  $("statLevel").textContent = data.level;
+
+  if (data.avatar) {
+    $("avatar").style.backgroundImage = `url("${data.avatar}")`;
+    $("avatar").textContent = "";
+  } else {
+    $("avatar").style.backgroundImage = "none";
+    $("avatar").textContent = data.avatarEmoji || "👤";
+  }
 }
 
-function makeMCQ(question,answer,explanation,category){
- const correct=Number(answer);
- let options=[correct];
+function updateMission() {
+  const today = new Date().toDateString();
 
- while(options.length<4){
-  let offset=rand(1,Math.max(5,Math.ceil(Math.abs(correct)*0.25)));
-  let candidate=correct+(Math.random()<0.5?-offset:offset);
-  if(candidate!==correct&&!options.includes(candidate))options.push(candidate);
- }
+  if (data.missionDate !== today) {
+    data.missionDate = today;
+    data.mission = 0;
+    saveData();
+  }
 
- return {
-  question,answer:correct,
-  options:shuffle(options),
-  explanation,category
- };
+  const count = Math.min(5, data.mission);
+
+  $("missionCount").textContent = count + "/5";
+  $("missionFill").style.width = (count / 5 * 100) + "%";
+
+  $("missionText").textContent = count >= 5
+    ? text("আজকের মিশন সম্পন্ন! 🎉", "Today's mission completed! 🎉")
+    : text("আজ ৫টি প্রশ্নের উত্তর দাও", "Answer 5 questions today");
 }
 
-function arithmeticQuestion(){
- const s=settings();
- const a=rand(2,s.max);
- const b=rand(2,s.max);
- const type=rand(1,4);
+function updateStats() {
+  const rate = data.total
+    ? Math.round(data.correct / data.total * 100)
+    : 0;
 
- if(type===1){
-  return makeMCQ(a+" + "+b+" = ?",a+b,
-   a+" + "+b+" = "+(a+b),"পাটিগণিত");
- }
- if(type===2){
-  return makeMCQ((a+b)+" − "+b+" = ?",a,
-   (a+b)+" − "+b+" = "+a,"পাটিগণিত");
- }
- if(type===3){
-  return makeMCQ(a+" × "+b+" = ?",a*b,
-   a+" × "+b+" = "+(a*b),"পাটিগণিত");
- }
- return makeMCQ((a*b)+" ÷ "+a+" = ?",b,
-  (a*b)+" ÷ "+a+" = "+b,"পাটিগণিত");
+  $("statCorrect").textContent = data.correct;
+  $("statRate").textContent = rate + "%";
+  $("statsCorrect").textContent = data.correct;
+  $("statsWrong").textContent = data.wrong;
+  $("statsTotal").textContent = data.total;
+  $("statsRate").textContent = rate + "%";
+  $("homeScore").textContent = data.score;
+  $("homeAttempts").textContent = data.total;
 }
 
-function algebraQuestion(){
- const s=settings();
- const a=rand(2,s.complexity==="easy"?5:20);
- const x=rand(1,Math.min(30,s.max));
- const b=rand(1,Math.min(30,s.max));
- const result=a*x+b;
+function updateHistory() {
+  const list = $("historyList");
+  list.innerHTML = "";
 
- if(s.complexity==="hard"){
-  const c=rand(2,8);
-  const answer=x;
-  return makeMCQ(
-   c+"("+a+"x + "+b+") = "+(c*result)+" হলে x কত?",
-   answer,
-   "প্রথমে উভয় পাশকে "+c+" দিয়ে ভাগ করি। তারপর "+a+
-   "x + "+b+" = "+result+"। সুতরাং x = "+x,
-   "বীজগণিত"
-  );
- }
-
- return makeMCQ(
-  a+"x + "+b+" = "+result+" হলে x কত?",
-  x,
-  a+"x + "+b+" = "+result+
-  "। উভয় পাশ থেকে "+b+" বিয়োগ করলে "+a+
-  "x = "+(result-b)+"। অতএব x = "+x,
-  "বীজগণিত"
- );
-}
-
-function geometryQuestion(){
- const s=settings();
- const a=rand(2,Math.min(100,s.max));
- const b=rand(2,Math.min(100,s.max));
- const type=rand(1,3);
-
- if(type===1){
-  return makeMCQ(
-   "আয়তক্ষেত্রের দৈর্ঘ্য "+a+" এবং প্রস্থ "+b+
-   "। ক্ষেত্রফল কত?",
-   a*b,
-   "ক্ষেত্রফল = দৈর্ঘ্য × প্রস্থ = "+a+" × "+b+" = "+(a*b),
-   "জ্যামিতি"
-  );
- }
-
- if(type===2){
-  return makeMCQ(
-   "বর্গের বাহু "+a+"। ক্ষেত্রফল কত?",
-   a*a,
-   "ক্ষেত্রফল = বাহু × বাহু = "+a+" × "+a+" = "+(a*a),
-   "জ্যামিতি"
-  );
- }
-
- return makeMCQ(
-  "আয়তক্ষেত্রের দৈর্ঘ্য "+a+" এবং প্রস্থ "+b+
-  "। পরিসীমা কত?",
-  2*(a+b),
-  "পরিসীমা = 2 × (দৈর্ঘ্য + প্রস্থ) = "+(2*(a+b)),
-  "জ্যামিতি"
- );
-}
-
-function newQuestion(){
- answered=false;
- selectedAnswer=null;
-
- el("feedback").textContent="";
- el("explanation").classList.add("hidden");
- el("explainButton").disabled=true;
- el("nextButton").disabled=true;
-
- const category=el("category").value;
- const selected=category==="mixed"?
-  ["arithmetic","algebra","geometry"][rand(0,2)]:category;
-
- if(selected==="arithmetic")currentQuestion=arithmeticQuestion();
- if(selected==="algebra")currentQuestion=algebraQuestion();
- if(selected==="geometry")currentQuestion=geometryQuestion();
-
- el("question").textContent=currentQuestion.question;
- el("levelBadge").textContent="Level "+data.level;
- el("categoryBadge").textContent=currentQuestion.category;
- el("difficultyBadge").textContent=el("difficulty").value.toUpperCase();
-
- el("options").innerHTML="";
- currentQuestion.options.forEach((option,index)=>{
-  const button=document.createElement("button");
-  button.className="option";
-  button.textContent=String.fromCharCode(65+index)+". "+option;
-  button.onclick=()=>selectOption(option,button);
-  el("options").appendChild(button);
- });
-}
-
-function selectOption(value,button){
- if(answered)return;
- selectedAnswer=value;
- document.querySelectorAll(".option").forEach(item=>item.classList.remove("selected"));
- button.classList.add("selected");
- checkAnswer();
-}
-
-function checkAnswer(){
- if(answered||selectedAnswer===null)return;
- answered=true;
- data.attempts++;
-
- const correct=selectedAnswer===currentQuestion.answer;
-
- if(correct){
-  data.correct++;
-  data.score+=10;
-  el("feedback").textContent="🎉 সঠিক উত্তর! +১০ পয়েন্ট";
-  el("feedback").style.color="#20c997";
-  playSound(true);
- }else{
-  el("feedback").textContent="❌ উত্তরটি সঠিক নয়।";
-  el("feedback").style.color="#ff647c";
-  playSound(false);
- }
-
- document.querySelectorAll(".option").forEach(button=>{
-  const value=Number(button.textContent.split(". ")[1]);
-  if(value===currentQuestion.answer)button.classList.add("correct");
-  else if(value===selectedAnswer)button.classList.add("wrong");
-  button.disabled=true;
- });
-
- el("explainButton").disabled=false;
- el("nextButton").disabled=false;
- el("correctAnswer").textContent="সঠিক উত্তর: "+currentQuestion.answer;
- el("explanationText").textContent=currentQuestion.explanation;
-
- data.history.unshift({
-  level:data.level,
-  question:currentQuestion.question,
-  selected:selectedAnswer,
-  correctAnswer:currentQuestion.answer,
-  isCorrect:correct,
-  category:currentQuestion.category,
-  date:new Date().toLocaleString()
- });
-
- data.history=data.history.slice(0,100);
- const today=new Date().toDateString();
- if(data.dailyDate!==today){
-  data.dailyDate=today;
-  data.dailyCount=0;
- }
- data.dailyCount++;
-
- save();
- updateDashboard();
- renderHistory();
- renderAchievements();
-}
-
-function nextQuestion(){
- if(!answered)return;
- if(data.level<TOTAL_LEVELS){
-  if(!data.completed.includes(data.level))data.completed.push(data.level);
-  data.level++;
- }
- save();
- updateDashboard();
- newQuestion();
-}
-
-function toggleExplanation(){
- el("explanation").classList.toggle("hidden");
- }
-function renderHistory(){
- const area=el("history");
- area.innerHTML="";
-
- if(!data.history.length){
-  area.textContent="এখনো কোনো প্রশ্নের ইতিহাস নেই।";
-  return;
- }
-
- data.history.slice(0,30).forEach(item=>{
-  const div=document.createElement("div");
-  div.className="history-item";
-  div.textContent="Level "+item.level+" — "+
-   (item.isCorrect?"সঠিক ✓":"ভুল ✗")+" | "+item.question;
-  area.appendChild(div);
- });
-}
-
-function renderAchievements(){
- const items=[
-  ["🌱","প্রথম প্রশ্ন",data.attempts>=1],
-  ["⭐","১০টি সঠিক উত্তর",data.correct>=10],
-  ["🏅","৫০টি সঠিক উত্তর",data.correct>=50],
-  ["🏆","১০০টি সঠিক উত্তর",data.correct>=100],
-  ["💎","১০০০ Score",data.score>=1000],
-  ["🚀","১০০ Level",data.level>=100]
- ];
-
- el("achievements").innerHTML="";
- items.forEach(item=>{
-  const div=document.createElement("div");
-  div.className="history-item";
-  div.textContent=item[0]+" "+item[1]+" — "+(item[2]?"Unlocked ✓":"Locked 🔒");
-  el("achievements").appendChild(div);
- });
-}
-
-function editName(){
- const name=prompt("তোমার নাম লেখো:",data.name);
- if(name!==null&&name.trim()){
-  data.name=name.trim().slice(0,30);
-  save();
-  updateDashboard();
- }
-}
-
-function uploadImage(event,type){
- const file=event.target.files[0];
- if(!file)return;
-
- if(!file.type.startsWith("image/")){
-  alert("শুধু Image নির্বাচন করো।");
-  event.target.value="";
-  return;
- }
-
- const reader=new FileReader();
-
- reader.onload=function(){
-  const img=new Image();
-
-  img.onload=function(){
-   const canvas=document.createElement("canvas");
-   const max=600;
-   let w=img.width,h=img.height;
-
-   if(w>h&&w>max){h=Math.round(h*max/w);w=max;}
-   else if(h>max){w=Math.round(w*max/h);h=max;}
-
-   canvas.width=w;
-   canvas.height=h;
-   canvas.getContext("2d").drawImage(img,0,0,w,h);
-
-   const image=canvas.toDataURL("image/jpeg",0.75);
-   const old=type==="avatar"?data.avatar:data.cover;
-
-   if(type==="avatar")data.avatar=image;
-   else data.cover=image;
-
-   if(!save()){
-    if(type==="avatar")data.avatar=old;
-    else data.cover=old;
+  if (!data.history.length) {
+    list.textContent = text("এখনো কোনো ইতিহাস নেই।", "No history yet.");
     return;
-   }
+  }
 
-   updateDashboard();
-   alert("ছবি সেভ হয়েছে!");
+  data.history.slice(0, 30).forEach(item => {
+    const div = document.createElement("div");
+    div.className = "history-item";
+    div.textContent =
+      item.date + " • " +
+      text("লেভেল ", "Level ") + item.level +
+      " • " + item.question +
+      " • " + (item.correct ? "✓" : "✗");
+
+    list.appendChild(div);
+  });
+}
+
+function updateAchievements() {
+  const items = [
+    ["🌱", "প্রথম প্রশ্ন", data.total >= 1],
+    ["⭐", "১০টি সঠিক উত্তর", data.correct >= 10],
+    ["🏅", "৫০টি সঠিক উত্তর", data.correct >= 50],
+    ["🏆", "১০০টি সঠিক উত্তর", data.correct >= 100],
+    ["💎", "১০০০ Score", data.score >= 1000],
+    ["🚀", "১০০ Level", data.level >= 100]
+  ];
+
+  const area = $("achievements");
+  area.innerHTML = "";
+
+  items.forEach(item => {
+    const div = document.createElement("div");
+    div.className = "history-item";
+    div.textContent =
+      item[0] + " " + item[1] +
+      " — " + (item[2] ? "Unlocked ✓" : "Locked 🔒");
+
+    area.appendChild(div);
+  });
+}
+
+function renderAll() {
+  document.body.classList.toggle("light", data.light);
+
+  $("soundToggle").checked = data.sound;
+  $("languageSelect").value = data.language;
+
+  $("settingsThemeBtn").textContent = data.light
+    ? text("ডার্ক থিম", "Dark theme")
+    : text("লাইট থিম", "Light theme");
+
+  updateProfile();
+  updateStats();
+  updateMission();
+  updateHistory();
+  updateAchievements();
+  applyLanguage();
+}
+
+function applyLanguage() {
+  document.documentElement.lang = data.language;
+
+  document.querySelectorAll("[data-bn][data-en]").forEach(element => {
+    element.textContent = data.language === "en"
+      ? element.dataset.en
+      : element.dataset.bn;
+  });
+
+  $("startBtn").textContent = text("খেলা শুরু করো", "Start Game");
+  $("closeSettingsBtn").textContent = text("ফিরে যাও", "Go Back");
+  $("settingsThemeBtn").textContent = data.light
+    ? text("ডার্ক থিম", "Dark Theme")
+    : text("লাইট থিম", "Light Theme");
+}
+
+function randomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = randomInt(0, i);
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+
+  return array;
+}
+
+function getDifficultyRange() {
+  const className = $("classSelect").value;
+  const difficulty = $("difficultySelect").value;
+
+  let base = 10;
+
+  if (className === "secondary") base = 30;
+  if (className === "higher") base = 100;
+
+  if (difficulty === "medium") base *= 3;
+  if (difficulty === "hard") base *= 8;
+
+  return base;
+}
+
+function makeOptions(answer) {
+  const options = [answer];
+
+  while (options.length < 4) {
+    const offset = randomInt(
+      1,
+      Math.max(5, Math.ceil(Math.abs(answer) * 0.2))
+    );
+
+    const candidate = answer +
+      (Math.random() < 0.5 ? offset : -offset);
+
+    if (candidate >= 0 && !options.includes(candidate)) {
+      options.push(candidate);
+    }
+  }
+
+  return shuffle(options);
+}
+
+function makeQuestion(question, answer, explanation) {
+  return {
+    question,
+    answer,
+    explanation,
+    options: makeOptions(answer)
+  };
+}
+
+function arithmeticQuestion() {
+  const max = getDifficultyRange();
+  const a = randomInt(2, max);
+  const b = randomInt(2, max);
+  const operation = randomInt(1, 4);
+
+  if (operation === 1) {
+    return makeQuestion(
+      a + " + " + b + " = ?",
+      a + b,
+      a + " + " + b + " = " + (a + b)
+    );
+  }
+
+  if (operation === 2) {
+    const high = Math.max(a, b);
+    const low = Math.min(a, b);
+
+    return makeQuestion(
+      high + " − " + low + " = ?",
+      high - low,
+      high + " − " + low + " = " + (high - low)
+    );
+  }
+
+  if (operation === 3) {
+    return makeQuestion(
+      a + " × " + b + " = ?",
+      a * b,
+      a + " × " + b + " = " + (a * b)
+    );
+  }
+
+  return makeQuestion(
+    (a * b) + " ÷ " + a + " = ?",
+    b,
+    (a * b) + " ÷ " + a + " = " + b
+  );
+}
+
+function algebraQuestion() {
+  const max = Math.min(30, getDifficultyRange());
+  const a = randomInt(2, 8);
+  const x = randomInt(1, max);
+  const b = randomInt(1, 15);
+  const result = a * x + b;
+
+  return makeQuestion(
+    a + "x + " + b + " = " + result + " হলে x কত?",
+    x,
+    "উভয় পাশ থেকে " + b + " বিয়োগ করলে " +
+    a + "x = " + (result - b) + "। তাই x = " + x
+  );
+}
+
+function geometryQuestion() {
+  const a = randomInt(2, Math.min(50, getDifficultyRange()));
+  const b = randomInt(2, Math.min(50, getDifficultyRange()));
+  const type = randomInt(1, 3);
+
+  if (type === 1) {
+    return makeQuestion(
+      "আয়তক্ষেত্রের দৈর্ঘ্য " + a + " এবং প্রস্থ " + b +
+      "। ক্ষেত্রফল কত?",
+      a * b,
+      "ক্ষেত্রফল = দৈর্ঘ্য × প্রস্থ = " + (a * b)
+    );
+  }
+
+  if (type === 2) {
+    return makeQuestion(
+      "বর্গের বাহু " + a + "। ক্ষেত্রফল কত?",
+      a * a,
+      "ক্ষেত্রফল = বাহু × বাহু = " + (a * a)
+    );
+  }
+
+  return makeQuestion(
+    "আয়তক্ষেত্রের দৈর্ঘ্য " + a + " এবং প্রস্থ " + b +
+    "। পরিসীমা কত?",
+    2 * (a + b),
+    "পরিসীমা = 2 × (দৈর্ঘ্য + প্রস্থ) = " + (2 * (a + b))
+  );
+}
+
+function createQuestion() {
+  let category = $("categorySelect").value;
+
+  if (category === "mixed") {
+    category = ["arithmetic", "algebra", "geometry"][randomInt(0, 2)];
+  }
+
+  if (category === "algebra") return algebraQuestion();
+  if (category === "geometry") return geometryQuestion();
+
+  return arithmeticQuestion();
+}
+
+function startGame() {
+  questionIndex = 0;
+  score = 0;
+  answered = false;
+
+  $("gamePanel").classList.remove("hidden");
+  $("gameLevel").textContent = text("লেভেল ", "Level ") + data.level;
+  $("gameScore").textContent = "0";
+
+  showQuestion();
+}
+
+function showQuestion() {
+  answered = false;
+  currentQuestion = createQuestion();
+
+  $("questionText").textContent = currentQuestion.question;
+  $("questionCount").textContent =
+    text("প্রশ্ন ", "Question ") + (questionIndex + 1) + "/5";
+
+  $("progressFill").style.width = (questionIndex / 5 * 100) + "%";
+  $("feedback").textContent = "";
+  $("feedback").className = "feedback";
+
+  $("explanation").textContent = "";
+  $("explanation").classList.add("hidden");
+
+  $("nextBtn").classList.add("hidden");
+  $("nextBtn").disabled = true;
+
+  const answers = $("answers");
+  answers.innerHTML = "";
+
+  currentQuestion.options.forEach(option => {
+    const button = document.createElement("button");
+
+    button.className = "answer-btn";
+    button.textContent = option;
+    button.type = "button";
+
+    button.addEventListener("click", () => {
+      checkAnswer(option, button);
+    });
+
+    answers.appendChild(button);
+  });
+}
+
+function playTone(correct) {
+  if (!data.sound) return;
+
+  try {
+    const AudioContextClass =
+      window.AudioContext || window.webkitAudioContext;
+
+    if (!AudioContextClass) return;
+
+    const audio = new AudioContextClass();
+    const oscillator = audio.createOscillator();
+    const gain = audio.createGain();
+
+    oscillator.connect(gain);
+    gain.connect(audio.destination);
+
+    oscillator.type = "sine";
+    oscillator.frequency.value = correct ? 660 : 220;
+    gain.gain.setValueAtTime(0.12, audio.currentTime);
+    gain.gain.exponentialRampToValueAtTime(
+      0.001,
+      audio.currentTime + 0.25
+    );
+
+    oscillator.start();
+    oscillator.stop(audio.currentTime + 0.25);
+    oscillator.onended = () => audio.close();
+  } catch (error) {
+    console.warn("Sound unavailable:", error);
+  }
+}
+
+function checkAnswer(selected, selectedButton) {
+  if (answered || !currentQuestion) return;
+
+  answered = true;
+
+  const isCorrect =
+    String(selected) === String(currentQuestion.answer);
+
+  document.querySelectorAll(".answer-btn").forEach(button => {
+    button.disabled = true;
+
+    if (
+      String(button.textContent) ===
+      String(currentQuestion.answer)
+    ) {
+      button.classList.add("correct");
+    }
+  });
+
+  if (isCorrect) {
+    data.correct++;
+    data.score += 10;
+    score++;
+    $("feedback").textContent = text("সঠিক উত্তর! 🎉", "Correct answer! 🎉");
+    $("feedback").className = "feedback good";
+  } else {
+    data.wrong++;
+    selectedButton.classList.add("wrong");
+    $("feedback").textContent =
+      text("ভুল উত্তর। সঠিক উত্তরটি সবুজ রঙে দেখানো হয়েছে।", "Wrong answer. The correct answer is shown in green.");
+    $("feedback").className = "feedback bad";
+  }
+
+  data.total++;
+  data.mission = Math.min(5, (data.mission || 0) + 1);
+
+  data.history.unshift({
+    date: new Date().toLocaleString(),
+    level: data.level,
+    question: currentQuestion.question,
+    correct: isCorrect
+  });
+
+  data.history = data.history.slice(0, 100);
+
+  $("explanation").textContent =
+    currentQuestion.explanation || "";
+  $("explanation").classList.remove("hidden");
+
+  $("progressFill").style.width =
+    ((questionIndex + 1) / 5 * 100) + "%";
+
+  $("gameScore").textContent = score * 10;
+
+  $("nextBtn").classList.remove("hidden");
+  $("nextBtn").disabled = false;
+
+  saveData();
+  updateStats();
+  updateMission();
+  updateAchievements();
+  updateHistory();
+  playTone(isCorrect);
+}
+
+function nextQuestion() {
+  if (!answered) return;
+
+  questionIndex++;
+
+  if (questionIndex >= 5) {
+    finishLevel();
+    return;
+  }
+
+  showQuestion();
+}
+
+function finishLevel() {
+  const passed = score >= 3;
+
+  if (passed) {
+    if (!data.completed.includes(data.level)) {
+      data.completed.push(data.level);
+    }
+
+    data.level = Math.min(MAX_LEVEL, data.level + 1);
+  }
+
+  saveData();
+  renderAll();
+
+  $("gamePanel").classList.add("hidden");
+  $("progressFill").style.width = "100%";
+
+  const message = passed
+    ? text(
+        "অভিনন্দন! তুমি এই লেভেলটি সম্পন্ন করেছ।",
+        "Congratulations! You completed this level."
+      )
+    : text(
+        "এই লেভেলটি সম্পন্ন হয়নি। আবার চেষ্টা করো।",
+        "Level not completed. Try again."
+      );
+
+  showMessage(
+    text("লেভেল ফলাফল", "Level Result"),
+    message + "\n" +
+    text("সঠিক উত্তর: ", "Correct answers: ") +
+    score + "/5"
+  );
+}
+
+function toggleTheme() {
+  data.light = !data.light;
+  saveData();
+  renderAll();
+}
+
+function openNameEditor() {
+  $("nameInput").value = data.name || "";
+  $("nameModal").classList.add("show");
+  $("nameInput").focus();
+}
+
+function saveName() {
+  const name = $("nameInput").value.trim();
+
+  if (!name) {
+    showMessage(
+      text("নাম লিখুন", "Enter a name"),
+      text("একটি নাম লিখে আবার চেষ্টা করুন।", "Please enter a name and try again.")
+    );
+    return;
+  }
+
+  data.name = name.slice(0, 30);
+  saveData();
+  updateProfile();
+  $("nameModal").classList.remove("show");
+}
+
+function openAvatarPicker() {
+  $("avatarModal").classList.add("show");
+}
+
+function buildEmojiPicker() {
+  const emojis = [
+    "😀", "😎", "🦊", "🐼", "🐯",
+    "🦁", "🐸", "🐵", "🐱", "🐶",
+    "🦄", "🚀", "⚽", "🏆", "🌟",
+    "🎯", "🎮", "📚", "🌈", "❤️",
+    "🐻", "🐰", "🐨", "🦋", "🌻",
+    "🔥", "🎨", "🎓", "👑", "🌙"
+  ];
+
+  const grid = $("emojiGrid");
+  grid.innerHTML = "";
+
+  emojis.forEach(emoji => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = emoji;
+    button.className = "answer-btn";
+
+    button.addEventListener("click", () => {
+      chooseEmoji(emoji);
+    });
+
+    grid.appendChild(button);
+  });
+}
+
+function chooseEmoji(emoji) {
+  data.avatar = "";
+  data.avatarEmoji = emoji;
+
+  saveData();
+  updateProfile();
+
+  $("avatarModal").classList.remove("show");
+}
+
+function openViewer(content) {
+  $("viewerContent").innerHTML = "";
+  $("viewerContent").appendChild(content);
+  $("imageViewer").classList.add("show");
+}
+
+function viewAvatar() {
+  if (data.avatar) {
+    const img = document.createElement("img");
+    img.src = data.avatar;
+    img.alt = "Profile picture";
+    img.style.maxWidth = "90vw";
+    img.style.maxHeight = "80vh";
+    img.style.objectFit = "contain";
+    openViewer(img);
+  } else {
+    const emoji = document.createElement("div");
+    emoji.textContent = data.avatarEmoji || "👤";
+    emoji.style.fontSize = "100px";
+    openViewer(emoji);
+  }
+}
+
+function viewCover() {
+  const cover = $("coverView");
+  const image = cover.querySelector("img");
+
+  if (image && image.src) {
+    const img = document.createElement("img");
+    img.src = image.src;
+    img.alt = "Cover picture";
+    img.style.maxWidth = "90vw";
+    img.style.maxHeight = "80vh";
+    img.style.objectFit = "contain";
+    openViewer(img);
+  }
+}
+
+function processAvatar(file) {
+  if (!file) return;
+
+  if (!file.type.startsWith("image/")) {
+    showMessage(
+      text("ভুল ফাইল", "Invalid file"),
+      text("শুধু ছবির ফাইল নির্বাচন করুন।", "Please select an image file.")
+    );
+    return;
+  }
+
+  if (file.size > 8 * 1024 * 1024) {
+    showMessage(
+      text("ছবি বড়", "Image too large"),
+      text("৮ MB-এর চেয়ে ছোট ছবি নির্বাচন করুন।", "Choose an image smaller than 8 MB.")
+    );
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = event => {
+    const image = new Image();
+
+    image.onload = () => {
+      try {
+        const canvas = document.createElement("canvas");
+        const maxSize = 400;
+
+        let width = image.width;
+        let height = image.height;
+
+        if (width > height && width > maxSize) {
+          height = Math.round(height * maxSize / width);
+          width = maxSize;
+        } else if (height > maxSize) {
+          width = Math.round(width * maxSize / height);
+          height = maxSize;
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        const context = canvas.getContext("2d");
+        context.drawImage(image, 0, 0, width, height);
+
+        data.avatar = canvas.toDataURL("image/jpeg", 0.8);
+        data.avatarEmoji = "";
+
+        saveData();
+        updateProfile();
+
+        $("avatarModal").classList.remove("show");
+      } catch (error) {
+        showMessage(
+          text("সমস্যা হয়েছে", "Error"),
+          text("ছবিটি ব্যবহার করা যায়নি। অন্য ছবি চেষ্টা করুন।", "Could not use this image. Try another one.")
+        );
+      }
+    };
+
+    image.onerror = () => {
+      showMessage(
+        text("ছবি খোলা যায়নি", "Image error"),
+        text("অন্য একটি ছবি নির্বাচন করুন।", "Please select another image.")
+      );
+    };
+
+    image.src = event.target.result;
   };
 
-  img.onerror=()=>alert("ছবিটি পড়া যাচ্ছে না।");
-  img.src=reader.result;
- };
+  reader.onerror = () => {
+    showMessage(
+      text("ফাইল পড়া যায়নি", "File error"),
+      text("আবার চেষ্টা করুন।", "Please try again.")
+    );
+  };
 
- reader.onerror=()=>alert("ছবি পড়তে সমস্যা হয়েছে।");
- reader.readAsDataURL(file);
+  reader.readAsDataURL(file);
 }
 
-function toggleTheme(){
- data.theme=data.theme==="dark"?"light":"dark";
- save();
- updateDashboard();
+function backupData() {
+  try {
+    const backup = {
+      app: "Ongko Shikhi",
+      version: 1,
+      data: data
+    };
+
+    const blob = new Blob(
+      [JSON.stringify(backup, null, 2)],
+      { type: "application/json" }
+    );
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = "ongko-shikhi-backup.json";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  } catch (error) {
+    showMessage(
+      text("ব্যাকআপ হয়নি", "Backup failed"),
+      text("আবার চেষ্টা করুন।", "Please try again.")
+    );
+  }
 }
 
-function playSound(correct){
- if(el("sound").value==="off")return;
+function restoreData(file) {
+  if (!file) return;
 
- try{
-  const Audio=window.AudioContext||window.webkitAudioContext;
-  if(!Audio)return;
+  const reader = new FileReader();
 
-  const ctx=new Audio();
-  const osc=ctx.createOscillator();
-  const gain=ctx.createGain();
+  reader.onload = event => {
+    try {
+      const parsed = JSON.parse(event.target.result);
+      const restored = parsed.data || parsed;
 
-  osc.connect(gain);
-  gain.connect(ctx.destination);
-  osc.frequency.value=correct?700:220;
-  gain.gain.value=.06;
-  osc.start();
-  osc.stop(ctx.currentTime+.15);
- }catch(e){}
+      if (
+        !restored ||
+        typeof restored !== "object" ||
+        !Number.isFinite(Number(restored.level))
+      ) {
+        throw new Error("Invalid backup");
+      }
+
+      data = {
+        ...defaultData,
+        ...restored
+      };
+
+      data.level = Math.max(
+        1,
+        Math.min(MAX_LEVEL, Math.floor(Number(data.level) || 1))
+      );
+
+      data.correct = Math.max(0, Number(data.correct) || 0);
+      data.wrong = Math.max(0, Number(data.wrong) || 0);
+      data.total = Math.max(0, Number(data.total) || 0);
+      data.score = Math.max(0, Number(data.score) || 0);
+
+      data.history = Array.isArray(data.history)
+        ? data.history.slice(0, 100)
+        : [];
+
+      data.completed = Array.isArray(data.completed)
+        ? data.completed
+        : [];
+
+      saveData();
+      renderAll();
+
+      showMessage(
+        text("সফল হয়েছে", "Successful"),
+        text("ব্যাকআপের তথ্য ফিরিয়ে আনা হয়েছে।", "Backup data has been restored.")
+      );
+    } catch (error) {
+      showMessage(
+        text("ব্যাকআপ ভুল", "Invalid backup"),
+        text("সঠিক ব্যাকআপ ফাইল নির্বাচন করুন।", "Please select a valid backup file.")
+      );
+    }
+
+    $("restoreInput").value = "";
+  };
+
+  reader.onerror = () => {
+    showMessage(
+      text("ফাইল পড়া যায়নি", "File error"),
+      text("আবার চেষ্টা করুন।", "Please try again.")
+    );
+    $("restoreInput").value = "";
+  };
+
+  reader.readAsText(file);
 }
 
-/* Full interface language switching */
-const translations={
- en:{
-  tagline:"Learn Mathematics, Gain Knowledge!",
-  home:"🏠 Home",game:"🎮 Play",stats:"📊 Progress",settings:"⚙️ Settings",
-  welcome:"Welcome! 🎉",
-  welcomeText:"Practice every day and gain new knowledge.",
-  level:"Current Level",score:"Total Score",correct:"Correct Answers",
-  rate:"Success Rate",progress:"Progress through 10,000 Levels",
-  start:"🚀 Start Playing",daily:"📅 Daily Practice",
-  gameTitle:"🎮 Math Challenge",classLabel:"Class",
-  difficulty:"Difficulty",category:"Math Category",
-  choose:"Choose the correct answer:",next:"Next Question ➜",
-  explain:"📖 Show Answer & Explanation",
-  name:"✏️ Change Name",picture:"Profile Picture",
-  cover:"Cover Picture",language:"Language / ভাষা",
-  sound:"Sound Effect",backup:"Backup & Restore",
-  download:"⬇️ Download Backup",restore:"Restore Backup",
-  privacy:"🔐 Privacy & Security",reset:"Reset All Data",
-  history:"📚 Question History",achievement:"🏆 Achievement",
-  attempts:"Total Attempts",wrong:"Wrong Answers",
-  best:"Total Score",clear:"Clear History",
-  today:"Today's questions",success:"🎉 Correct answer!",
-  incorrect:"❌ Incorrect answer. Learn from the explanation.",
-  saved:"Image saved successfully!"
- },
- bn:{
-  tagline:"শিখব অংক, জিতব জ্ঞান!",
-  home:"🏠 Home",game:"🎮 Play",stats:"📊 Progress",settings:"⚙️ Settings",
-  welcome:"স্বাগতম! 🎉",
-  welcomeText:"প্রতিদিন অনুশীলন করো, নতুন জ্ঞান অর্জন করো।",
-  level:"বর্তমান Level",score:"মোট Score",correct:"সঠিক উত্তর",
-  rate:"Success Rate",progress:"১০,০০০ Level-এর অগ্রগতি",
-  start:"🚀 খেলা শুরু করো",daily:"📅 আজকের অনুশীলন",
-  gameTitle:"🎮 Math Challenge",classLabel:"শ্রেণি",
-  difficulty:"কঠিনতা",category:"গণিতের বিভাগ",
-  choose:"সঠিক উত্তরটি নির্বাচন করো:",next:"পরবর্তী প্রশ্ন ➜",
-  explain:"📖 সঠিক উত্তর ও ব্যাখ্যা দেখুন",
-  name:"✏️ নাম পরিবর্তন",picture:"Profile Picture",
-  cover:"Cover Picture",language:"Language / ভাষা",
-  sound:"Sound Effect",backup:"Backup & Restore",
-  download:"⬇️ Backup Download",restore:"Restore Backup",
-  privacy:"🔐 Privacy & Security",reset:"সব ডেটা Reset",
-  history:"📚 প্রশ্নের ইতিহাস",achievement:"🏆 Achievement",
-  attempts:"মোট চেষ্টা",wrong:"ভুল উত্তর",
-  best:"সর্বোচ্চ Score",clear:"History Clear",
-  today:"আজকের প্রশ্ন",success:"🎉 সঠিক উত্তর!",
-  incorrect:"❌ উত্তরটি সঠিক নয়। ব্যাখ্যা দেখে শিখে নাও।",
-  saved:"ছবি সফলভাবে সেভ হয়েছে!"
- }
-};
+function bindEvents() {
+  $("startBtn").addEventListener("click", startGame);
+  $("nextBtn").addEventListener("click", nextQuestion);
 
-function changeLanguage(){
- const t=translations[el("language").value]||translations.bn;
- const set=(id,value)=>{const node=el(id);if(node)node.textContent=value;};
+  $("soundToggle").addEventListener("change", event => {
+    data.sound = event.target.checked;
+    saveData();
+  });
 
- set("tagline",t.tagline);
- set("home",t.welcome);
- document.querySelectorAll(".nav button").forEach((b,i)=>{
-  b.textContent=[t.home,t.game,t.stats,t.settings][i];
- });
+  $("languageSelect").addEventListener("change", event => {
+    data.language = event.target.value;
+    saveData();
+    renderAll();
+  });
 
- set("explainButton",t.explain);
- set("nextButton",t.next);
- set("feedback", "");
- newQuestion();
+  $("settingsThemeBtn").addEventListener("click", toggleTheme);
+
+  $("closeSettingsBtn").addEventListener("click", () => {
+    showSection(previousSection || "home");
+  });
+
+  $("backupBtn").addEventListener("click", backupData);
+
+  $("restoreBtn").addEventListener("click", () => {
+    $("restoreInput").click();
+  });
+
+  $("restoreInput").addEventListener("change", event => {
+    restoreData(event.target.files[0]);
+  });
+
+  $("profileName").addEventListener("click", openNameEditor);
+  $("saveNameBtn").addEventListener("click", saveName);
+
+  $("cancelNameBtn").addEventListener("click", () => {
+    $("nameModal").classList.remove("show");
+  });
+
+  $("avatar").addEventListener("pointerdown", () => {
+    longPressTriggered = false;
+
+    longPressTimer = setTimeout(() => {
+      longPressTriggered = true;
+      openAvatarPicker();
+    }, 600);
+  });
+
+  ["pointerup", "pointerleave", "pointercancel"].forEach(type => {
+    $("avatar").addEventListener(type, () => {
+      clearTimeout(longPressTimer);
+    });
+  });
+
+  $("avatar").addEventListener("click", () => {
+    if (longPressTriggered) {
+      longPressTriggered = false;
+      return;
+    }
+
+    viewAvatar();
+  });
+
+  $("galleryBtn").addEventListener("click", () => {
+    $("avatarInput").click();
+  });
+
+  $("avatarInput").addEventListener("change", event => {
+    processAvatar(event.target.files[0]);
+    event.target.value = "";
+  });
+
+  $("closeAvatarBtn").addEventListener("click", () => {
+    $("avatarModal").classList.remove("show");
+  });
+
+  $("coverView").addEventListener("click", viewCover);
+
+  $("imageViewer").addEventListener("click", event => {
+    if (event.target === $("imageViewer")) {
+      $("imageViewer").classList.remove("show");
+    }
+  });
+
+  $("messageOkBtn").addEventListener("click", closeMessage);
 }
 
-function exportBackup(){
- const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
- const url=URL.createObjectURL(blob);
- const a=document.createElement("a");
- a.href=url;
- a.download="Ongko-Shikhi-Backup.json";
- a.click();
- setTimeout(()=>URL.revokeObjectURL(url),1000);
+function initializeApp() {
+  bindEvents();
+  buildEmojiPicker();
+  renderAll();
+
+  showSection("home");
+
+  $("gamePanel").classList.add("hidden");
+  $("nextBtn").classList.add("hidden");
+  $("nextBtn").disabled = true;
 }
 
-function importBackup(){
- const file=el("backupFile").files[0];
- if(!file){alert("আগে Backup ফাইল নির্বাচন করো।");return;}
+initializeApp();
 
- const reader=new FileReader();
- reader.onload=()=>{
-  try{
-   const imported=JSON.parse(reader.result);
-   if(!imported||!Array.isArray(imported.history)||
-      !Array.isArray(imported.completed)||
-      !Number.isFinite(imported.level))throw Error();
-
-   data={
-    ...defaults,...imported,
-    level:Math.min(TOTAL_LEVELS,Math.max(1,Math.floor(imported.level))),
-    score:Math.max(0,Number(imported.score)||0),
-    correct:Math.max(0,Number(imported.correct)||0),
-    attempts:Math.max(0,Number(imported.attempts)||0)
-   };
-
-   if(save()){
-    updateDashboard();
-    renderHistory();
-    renderAchievements();
-    newQuestion();
-    alert("Backup Restore সফল হয়েছে!");
-   }
-  }catch(e){alert("Backup ফাইলটি সঠিক নয়।");}
- };
- reader.readAsText(file);
-}
-
-function clearHistory(){
- if(confirm("History মুছে ফেলতে চাও?")){
-  data.history=[];
-  save();
-  renderHistory();
- }
-}
-
-function resetData(){
- if(!confirm("সব Progress ও Profile Data মুছে যাবে। নিশ্চিত?"))return;
- localStorage.removeItem(STORAGE_KEY);
- location.reload();
-}
-
-/* Start application */
-updateDashboard();
-renderHistory();
-renderAchievements();
-changeLanguage();
 </script>
 </body>
 </html>
