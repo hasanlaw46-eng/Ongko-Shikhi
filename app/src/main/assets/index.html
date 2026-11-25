@@ -1,0 +1,924 @@
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#10182c">
+<title>অংক শিখি</title>
+
+<style>
+:root {
+ --bg:#10182c;
+ --panel:#1b2943;
+ --panel2:#243653;
+ --text:#f4f7ff;
+ --muted:#aebbd2;
+ --primary:#718cff;
+ --accent:#20c997;
+ --danger:#ff647c;
+ --border:#ffffff18;
+}
+*{box-sizing:border-box}
+body{
+ margin:0;background:var(--bg);color:var(--text);
+ font-family:Arial,"Noto Sans Bengali",sans-serif;
+ transition:.25s;
+}
+body.light{
+ --bg:#edf2fc;--panel:#fff;--panel2:#e5ebf7;
+ --text:#17233a;--muted:#65738c;--border:#17233a20;
+}
+button,input,select{font:inherit}
+button{cursor:pointer}
+header{
+ background:linear-gradient(130deg,#243e83,#7547a8);
+ padding:24px 16px;text-align:center;
+}
+header h1{margin:0;font-size:30px}
+header p{margin:8px 0 0;color:#e0e7ff}
+.container{max-width:950px;margin:auto;padding:14px}
+.card{
+ background:var(--panel);border:1px solid var(--border);
+ border-radius:18px;padding:17px;margin-bottom:15px;
+ box-shadow:0 5px 18px #0002;
+}
+.card h2,.card h3{margin-top:0}
+.muted{color:var(--muted);font-size:13px}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row>*{flex:1;min-width:0}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.stat{
+ background:var(--panel2);padding:14px;border-radius:13px;
+ text-align:center;
+}
+.stat strong{display:block;font-size:24px;margin-top:7px}
+input,select{
+ width:100%;padding:12px;border-radius:10px;
+ border:1px solid var(--border);background:var(--panel2);
+ color:var(--text);margin:6px 0 12px;
+}
+button{
+ padding:12px;border:0;border-radius:11px;
+ background:var(--primary);color:white;font-weight:700;
+}
+button:disabled{opacity:.4;cursor:not-allowed}
+.secondary{background:var(--panel2);color:var(--text)}
+.green{background:var(--accent);color:#092b25}
+.red{background:var(--danger)}
+.full{width:100%}
+.cover{
+ height:115px;border-radius:14px;
+ background:linear-gradient(120deg,#385ed0,#a34fc2);
+ background-position:center;background-size:cover;
+}
+.profile{display:flex;align-items:center;gap:13px;margin-top:13px}
+.avatar{
+ width:66px;height:66px;border-radius:50%;
+ object-fit:cover;background:var(--panel2);
+ border:3px solid var(--primary);
+}
+.progress{
+ height:12px;background:var(--panel2);
+ border-radius:20px;overflow:hidden;
+}
+.progress div{
+ height:100%;width:0;background:var(--accent);
+ transition:width .3s;
+}
+.question{
+ text-align:center;font-size:28px;font-weight:800;
+ padding:24px 5px;line-height:1.6;
+}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.option{
+ background:var(--panel2);color:var(--text);
+ border:2px solid transparent;text-align:left;
+ min-height:55px;
+}
+.option.selected{border-color:var(--primary)}
+.option.correct{background:#147c5c;border-color:#35e5ae;color:white}
+.option.wrong{background:#a52d4b;border-color:#ff8196;color:white}
+.option:disabled{opacity:1}
+.explain{
+ background:var(--panel2);padding:13px;
+ border-radius:12px;margin-top:12px;
+ line-height:1.7;
+}
+.feedback{text-align:center;font-weight:bold;min-height:27px;margin:12px}
+.badge{
+ display:inline-block;background:var(--panel2);
+ padding:7px 11px;border-radius:20px;
+ font-size:12px;margin:3px;
+}
+.history-item{
+ padding:12px 0;border-bottom:1px solid var(--border);
+ line-height:1.6;
+}
+.hidden{display:none!important}
+.nav{
+ display:grid;grid-template-columns:repeat(4,1fr);
+ gap:7px;margin-bottom:14px;
+}
+.nav button{font-size:12px;padding:11px 4px}
+.section{display:none}
+.section.active{display:block}
+footer{text-align:center;color:var(--muted);padding:22px;font-size:12px}
+@media(max-width:480px){
+ .options{grid-template-columns:1fr}
+ .question{font-size:23px}
+ .nav button{font-size:10px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+ <h1>🔢 অংক শিখি</h1>
+ <p id="tagline">শিখব অংক, জিতব জ্ঞান!</p>
+</header>
+
+<main class="container">
+
+<!-- PROFILE -->
+<section class="card">
+ <div class="cover" id="cover"></div>
+ <div class="profile">
+  <img id="avatar" class="avatar"
+   src="https://placehold.co/100x100/354b75/ffffff?text=AS"
+   alt="Profile picture">
+  <div>
+   <h3 id="playerName">Player</h3>
+   <div class="muted" id="playerLevel">Level 1</div>
+   <span class="badge">⭐ Math Learner</span>
+  </div>
+ </div>
+ <div class="row">
+  <button class="secondary" onclick="editName()">✏️ নাম পরিবর্তন</button>
+  <button class="secondary" onclick="toggleTheme()">🌙 Theme</button>
+ </div>
+ <div class="row">
+  <div>
+   <label class="muted">Profile Picture</label>
+   <input type="file" accept="image/*" onchange="uploadImage(event,'avatar')">
+  </div>
+  <div>
+   <label class="muted">Cover Picture</label>
+   <input type="file" accept="image/*" onchange="uploadImage(event,'cover')">
+  </div>
+ </div>
+</section>
+
+<!-- NAVIGATION -->
+<nav class="nav">
+ <button onclick="showSection('home')">🏠 Home</button>
+ <button onclick="showSection('game')">🎮 Play</button>
+ <button onclick="showSection('stats')">📊 Progress</button>
+ <button onclick="showSection('settings')">⚙️ Settings</button>
+</nav>
+
+<!-- HOME -->
+<section id="home" class="section active">
+ <div class="card">
+  <h2>স্বাগতম! 🎉</h2>
+  <p class="muted">প্রতিদিন অনুশীলন করো, নতুন জ্ঞান অর্জন করো।</p>
+  <div class="grid">
+   <div class="stat">বর্তমান Level<strong id="homeLevel">1</strong></div>
+   <div class="stat">মোট Score<strong id="homeScore">0</strong></div>
+   <div class="stat">সঠিক উত্তর<strong id="homeCorrect">0</strong></div>
+   <div class="stat">Success Rate<strong id="homeRate">0%</strong></div>
+  </div>
+  <p class="muted">১০,০০০ Level-এর অগ্রগতি</p>
+  <div class="progress"><div id="progressBar"></div></div>
+  <p class="muted" id="progressText">0 / 10000 completed</p>
+  <button class="full green" onclick="showSection('game')">🚀 খেলা শুরু করো</button>
+ </div>
+
+ <div class="card">
+  <h3>📅 আজকের অনুশীলন</h3>
+  <p id="dailyGoal">আজ ১০টি প্রশ্নের উত্তর দেওয়ার চেষ্টা করো।</p>
+  <div class="progress"><div id="dailyBar"></div></div>
+ </div>
+</section>
+
+<!-- GAME -->
+<section id="game" class="section">
+ <div class="card">
+  <h2>🎮 Math Challenge</h2>
+
+  <div class="row">
+   <div>
+    <label class="muted">শ্রেণি</label>
+    <select id="classBand" onchange="newQuestion()">
+     <option value="primary">Class 1–5</option>
+     <option value="secondary">Class 6–10</option>
+     <option value="higher">Class 11–12</option>
+    </select>
+   </div>
+   <div>
+    <label class="muted">কঠিনতা</label>
+    <select id="difficulty" onchange="newQuestion()">
+     <option value="easy">Easy</option>
+     <option value="medium">Medium</option>
+     <option value="hard">Hard</option>
+    </select>
+   </div>
+  </div>
+
+  <label class="muted">গণিতের বিভাগ</label>
+  <select id="category" onchange="newQuestion()">
+   <option value="arithmetic">পাটিগণিত</option>
+   <option value="algebra">বীজগণিত</option>
+   <option value="geometry">জ্যামিতি</option>
+   <option value="mixed">সব একসাথে</option>
+  </select>
+
+  <div class="row">
+   <span class="badge" id="levelBadge">Level 1</span>
+   <span class="badge" id="categoryBadge">পাটিগণিত</span>
+   <span class="badge" id="difficultyBadge">Easy</span>
+  </div>
+
+  <div class="question" id="question">প্রস্তুত হও!</div>
+
+  <p class="muted">সঠিক উত্তরটি নির্বাচন করো:</p>
+  <div class="options" id="options"></div>
+
+  <div class="feedback" id="feedback"></div>
+
+  <button id="explainButton" class="secondary full"
+   onclick="toggleExplanation()" disabled>
+   📖 সঠিক উত্তর ও ব্যাখ্যা দেখুন
+  </button>
+
+  <div id="explanation" class="explain hidden">
+   <strong id="correctAnswer"></strong>
+   <p id="explanationText"></p>
+  </div>
+
+  <div class="row" style="margin-top:14px">
+   <button class="green" id="nextButton"
+    onclick="nextQuestion()" disabled>পরবর্তী প্রশ্ন ➜</button>
+   <button class="secondary" onclick="newQuestion()">নতুন প্রশ্ন</button>
+  </div>
+ </div>
+</section>
+
+<!-- STATS -->
+<section id="stats" class="section">
+ <div class="card">
+  <h2>📊 তোমার অগ্রগতি</h2>
+  <div class="grid">
+   <div class="stat">মোট চেষ্টা<strong id="attempts">0</strong></div>
+   <div class="stat">সঠিক উত্তর<strong id="correctCount">0</strong></div>
+   <div class="stat">ভুল উত্তর<strong id="wrongCount">0</strong></div>
+   <div class="stat">সর্বোচ্চ Score<strong id="bestScore">0</strong></div>
+  </div>
+ </div>
+
+ <div class="card">
+  <h3>🏆 Achievement</h3>
+  <div id="achievements"></div>
+ </div>
+
+ <div class="card">
+  <h3>📚 প্রশ্নের ইতিহাস</h3>
+  <div id="history"></div>
+  <button class="red full" onclick="clearHistory()">History Clear</button>
+ </div>
+</section>
+
+<!-- SETTINGS -->
+<section id="settings" class="section">
+ <div class="card">
+  <h2>⚙️ Settings</h2>
+
+  <label class="muted">Language / ভাষা</label>
+  <select id="language" onchange="changeLanguage()">
+   <option value="bn">বাংলা</option>
+   <option value="en">English</option>
+  </select>
+
+  <label class="muted">Sound Effect</label>
+  <select id="sound">
+   <option value="on">ON</option>
+   <option value="off">OFF</option>
+  </select>
+
+  <label class="muted">Animation</label>
+  <select id="animation">
+   <option value="on">ON</option>
+   <option value="off">OFF</option>
+  </select>
+ </div>
+
+ <div class="card">
+  <h3>💾 Backup & Restore</h3>
+  <p class="muted">নিজের অগ্রগতি JSON ফাইলে সংরক্ষণ করো।</p>
+  <button class="full" onclick="exportBackup()">⬇️ Backup Download</button>
+  <label class="muted">Backup Restore</label>
+  <input type="file" id="backupFile" accept=".json">
+  <button class="secondary full" onclick="importBackup()">Restore Backup</button>
+ </div>
+
+ <div class="card">
+  <h3>🔐 Privacy & Security</h3>
+  <p class="muted">
+   এই সংস্করণে তথ্য তোমার ডিভাইসের Local Storage-এ থাকে।
+   এটি নিরাপদ সার্ভার অ্যাকাউন্ট বা Encrypted Cloud Storage নয়।
+   নিজের ব্যক্তিগত বা সংবেদনশীল তথ্য এখানে সংরক্ষণ করো না।
+  </p>
+  <button class="red full" onclick="resetData()">সব ডেটা Reset</button>
+ </div>
+
+ <div class="card">
+  <h3>ℹ️ About</h3>
+  <p>অংক শিখি — Version 1.0 Starter</p>
+  <p class="muted">Learn Mathematics Through Practice.</p>
+ </div>
+</section>
+
+</main>
+
+<footer>
+ অংক শিখি © 2026<br>
+ শেখার আনন্দ, জ্ঞানের শক্তি।
+</footer>
+
+<script>
+"use strict";
+
+const TOTAL_LEVELS=10000;
+const STORAGE_KEY="ongkoShikhiData";
+
+const defaults={
+ name:"Player",
+ avatar:"",
+ cover:"",
+ level:1,
+ score:0,
+ correct:0,
+ attempts:0,
+ completed:[],
+ history:[],
+ theme:"dark",
+ dailyCount:0,
+ dailyDate:new Date().toDateString()
+};
+
+function loadData(){
+ try{
+  const saved=JSON.parse(localStorage.getItem(STORAGE_KEY));
+  return saved?{...defaults,...saved}: {...defaults};
+ }catch(e){
+  return {...defaults};
+ }
+}
+
+let data=loadData();
+let currentQuestion=null;
+let selectedAnswer=null;
+let answered=false;
+
+function save(){
+ localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
+}
+
+function el(id){
+ return document.getElementById(id);
+}
+
+function showSection(id){
+ document.querySelectorAll(".section").forEach(s=>{
+  s.classList.remove("active");
+ });
+ el(id).classList.add("active");
+ if(id==="stats"){
+  renderHistory();
+  renderAchievements();
+ }
+}
+
+function updateDashboard(){
+ const rate=data.attempts?
+  Math.round(data.correct/data.attempts*100):0;
+
+ el("playerName").textContent=data.name;
+ el("playerLevel").textContent="Level "+data.level;
+ el("homeLevel").textContent=data.level;
+ el("homeScore").textContent=data.score;
+ el("homeCorrect").textContent=data.correct;
+ el("homeRate").textContent=rate+"%";
+
+ el("progressBar").style.width=
+  Math.min(data.completed.length/TOTAL_LEVELS*100,100)+"%";
+
+ el("progressText").textContent=
+  data.completed.length+" / "+TOTAL_LEVELS+" completed";
+
+ el("attempts").textContent=data.attempts;
+ el("correctCount").textContent=data.correct;
+ el("wrongCount").textContent=data.attempts-data.correct;
+ el("bestScore").textContent=data.score;
+
+ el("dailyGoal").textContent=
+  "আজকের প্রশ্ন: "+data.dailyCount+" / 10";
+
+ el("dailyBar").style.width=
+  Math.min(data.dailyCount/10*100,100)+"%";
+
+ if(data.avatar)el("avatar").src=data.avatar;
+ if(data.cover){
+  el("cover").style.backgroundImage="url("+data.cover+")";
+ }
+
+ document.body.classList.toggle("light",data.theme==="light");
+}
+
+function rangeForSettings(){
+ const band=el("classBand").value;
+ const difficulty=el("difficulty").value;
+
+ let max=20;
+
+ if(band==="secondary")max=100;
+ if(band==="higher")max=500;
+
+ if(difficulty==="medium")max*=2;
+ if(difficulty==="hard")max*=5;
+
+ return max;
+}
+
+function rand(min,max){
+ return Math.floor(Math.random()*(max-min+1))+min;
+}
+
+function shuffle(array){
+ for(let i=array.length-1;i>0;i--){
+  const j=Math.floor(Math.random()*(i+1));
+  [array[i],array[j]]=[array[j],array[i]];
+ }
+ return array;
+}
+
+function makeMCQ(question,answer,explanation,category){
+ const correct=Number(answer);
+ let options=[correct];
+ const offsets=[1,2,3,4,5,7,10,12];
+
+ while(options.length<4){
+  const offset=offsets[rand(0,offsets.length-1)]*
+   (Math.random()<.5?-1:1);
+  const candidate=correct+offset;
+  if(!options.includes(candidate))options.push(candidate);
+ }
+
+ return {
+  question,
+  answer:correct,
+  options:shuffle(options),
+  explanation,
+  category
+ };
+}
+
+function arithmeticQuestion(){
+ const max=rangeForSettings();
+ const a=rand(2,max);
+ const b=rand(2,max);
+ const type=rand(1,4);
+
+ if(type===1){
+  return makeMCQ(
+   a+" + "+b+" = ?",
+   a+b,
+   "সমাধান: "+a+" + "+b+" = "+(a+b)+
+   "। দুটি সংখ্যাকে যোগ করলে যোগফল পাওয়া যায়।",
+   "পাটিগণিত"
+  );
+ }
+
+ if(type===2){
+  return makeMCQ(
+   (a+b)+" − "+b+" = ?",
+   a,
+   "সমাধান: "+(a+b)+" − "+b+" = "+a+
+   "। বিয়োগের মাধ্যমে অবশিষ্ট সংখ্যা পাওয়া যায়।",
+   "পাটিগণিত"
+  );
+ }
+
+ if(type===3){
+  return makeMCQ(
+   a+" × "+b+" = ?",
+   a*b,
+   "সমাধান: "+a+" কে "+b+" দিয়ে গুণ করলে "+(a*b)+" হয়।",
+   "পাটিগণিত"
+  );
+ }
+
+ const product=a*b;
+ return makeMCQ(
+  product+" ÷ "+a+" = ?",
+  b,
+  "সমাধান: "+product+" কে "+a+" দিয়ে ভাগ করলে "+b+
+  " পাওয়া যায়। কারণ "+a+" × "+b+" = "+product+"।",
+  "পাটিগণিত"
+ );
+}
+
+function algebraQuestion(){
+ const x=rand(1,20);
+ const a=rand(2,10);
+ const b=rand(1,20);
+ const result=a*x+b;
+
+ return makeMCQ(
+  a+"x + "+b+" = "+result+" হলে x কত?",
+  x,
+  "সমাধান: "+a+"x + "+b+" = "+result+
+  "। উভয় পাশ থেকে "+b+" বিয়োগ করলে "+a+
+  "x = "+(result-b)+"। এবার "+a+
+  " দিয়ে ভাগ করলে x = "+x+"।",
+  "বীজগণিত"
+ );
+}
+
+function geometryQuestion(){
+ const a=rand(2,25);
+ const b=rand(2,25);
+ const type=rand(1,3);
+
+ if(type===1){
+  return makeMCQ(
+   "একটি আয়তক্ষেত্রের দৈর্ঘ্য "+a+
+   " এবং প্রস্থ "+b+"। ক্ষেত্রফল কত?",
+   a*b,
+   "আয়তক্ষেত্রের ক্ষেত্রফল = দৈর্ঘ্য × প্রস্থ। "+
+   a+" × "+b+" = "+(a*b)+" বর্গ একক।",
+   "জ্যামিতি"
+  );
+ }
+
+ if(type===2){
+  return makeMCQ(
+   "একটি বর্গের বাহু "+a+"। ক্ষেত্রফল কত?",
+   a*a,
+   "বর্গের ক্ষেত্রফল = বাহু × বাহু। "+
+   a+" × "+a+" = "+(a*a)+" বর্গ একক।",
+   "জ্যামিতি"
+  );
+ }
+
+ return makeMCQ(
+  "একটি আয়তক্ষেত্রের দৈর্ঘ্য "+a+
+  " এবং প্রস্থ "+b+"। পরিসীমা কত?",
+  2*(a+b),
+  "আয়তক্ষেত্রের পরিসীমা = 2 × (দৈর্ঘ্য + প্রস্থ)। "+
+  "2 × ("+a+" + "+b+") = "+(2*(a+b))+" একক।",
+  "জ্যামিতি"
+ );
+}
+
+function newQuestion(){
+ answered=false;
+ selectedAnswer=null;
+
+ el("feedback").textContent="";
+ el("explanation").classList.add("hidden");
+ el("explainButton").disabled=true;
+ el("nextButton").disabled=true;
+
+ const category=el("category").value;
+ const selected=category==="mixed"?
+  ["arithmetic","algebra","geometry"][rand(0,2)]:category;
+
+ if(selected==="arithmetic")currentQuestion=arithmeticQuestion();
+ if(selected==="algebra")currentQuestion=algebraQuestion();
+ if(selected==="geometry")currentQuestion=geometryQuestion();
+
+ el("question").textContent=currentQuestion.question;
+ el("levelBadge").textContent="Level "+data.level;
+ el("categoryBadge").textContent=currentQuestion.category;
+ el("difficultyBadge").textContent=el("difficulty").value;
+
+ el("options").innerHTML="";
+
+ currentQuestion.options.forEach((option,index)=>{
+  const button=document.createElement("button");
+  button.className="option";
+  button.textContent=String.fromCharCode(65+index)+". "+option;
+  button.onclick=()=>selectOption(option,button);
+  el("options").appendChild(button);
+ });
+}
+
+function selectOption(value,button){
+ if(answered)return;
+
+ selectedAnswer=value;
+
+ document.querySelectorAll(".option").forEach(item=>{
+  item.classList.remove("selected");
+ });
+
+ button.classList.add("selected");
+ checkAnswer();
+}
+
+function checkAnswer(){
+ if(answered||selectedAnswer===null)return;
+
+ answered=true;
+ data.attempts++;
+
+ const correct=selectedAnswer===currentQuestion.answer;
+
+ if(correct){
+  data.correct++;
+  data.score+=10;
+  el("feedback").textContent="🎉 সঠিক উত্তর! +১০ পয়েন্ট";
+  el("feedback").style.color="#20c997";
+  playSound(true);
+ }else{
+  el("feedback").textContent="❌ উত্তরটি সঠিক নয়। ব্যাখ্যা দেখে শিখে নাও।";
+  el("feedback").style.color="#ff647c";
+  playSound(false);
+ }
+
+ document.querySelectorAll(".option").forEach(button=>{
+  const value=Number(button.textContent.split(". ")[1]);
+
+  if(value===currentQuestion.answer)button.classList.add("correct");
+  else if(value===selectedAnswer)button.classList.add("wrong");
+
+  button.disabled=true;
+ });
+
+ el("explainButton").disabled=false;
+ el("nextButton").disabled=false;
+
+ el("correctAnswer").textContent=
+  "সঠিক উত্তর: "+currentQuestion.answer;
+
+ el("explanationText").textContent=
+  currentQuestion.explanation;
+
+ data.history.unshift({
+  level:data.level,
+  question:currentQuestion.question,
+  selected:selectedAnswer,
+  correctAnswer:currentQuestion.answer,
+  isCorrect:correct,
+  category:currentQuestion.category,
+  date:new Date().toLocaleString()
+ });
+
+ data.history=data.history.slice(0,100);
+
+ const today=new Date().toDateString();
+ if(data.dailyDate!==today){
+  data.dailyDate=today;
+  data.dailyCount=0;
+ }
+ data.dailyCount++;
+
+ save();
+ updateDashboard();
+ renderHistory();
+ renderAchievements();
+}
+
+function toggleExplanation(){
+ el("explanation").classList.toggle("hidden");
+}
+
+function nextQuestion(){
+ if(!answered)return;
+
+ if(data.level<TOTAL_LEVELS){
+  data.level++;
+  if(!data.completed.includes(data.level-1)){
+   data.completed.push(data.level-1);
+  }
+ }else{
+  el("feedback").textContent="🏆 সব Level সম্পন্ন হয়েছে!";
+ }
+
+ save();
+ updateDashboard();
+ newQuestion();
+}
+
+function renderHistory(){
+ const area=el("history");
+ area.innerHTML="";
+
+ if(data.history.length===0){
+  area.textContent="এখনো কোনো প্রশ্নের ইতিহাস নেই।";
+  return;
+ }
+
+ data.history.slice(0,30).forEach(item=>{
+  const div=document.createElement("div");
+  div.className="history-item";
+
+  const title=document.createElement("strong");
+  title.textContent="Level "+item.level+" — "+
+   (item.isCorrect?"সঠিক ✓":"ভুল ✗");
+
+  const q=document.createElement("div");
+  q.textContent=item.question;
+
+  const date=document.createElement("div");
+  date.className="muted";
+  date.textContent=item.date;
+
+  div.append(title,q,date);
+  area.appendChild(div);
+ });
+}
+
+function renderAchievements(){
+ const items=[
+  ["🌱","প্রথম প্রশ্ন",data.attempts>=1],
+  ["⭐","১০টি সঠিক উত্তর",data.correct>=10],
+  ["🏅","৫০টি সঠিক উত্তর",data.correct>=50],
+  ["🏆","১০০টি সঠিক উত্তর",data.correct>=100],
+  ["💎","১০০০ Score",data.score>=1000],
+  ["🚀","১০০ Level",data.level>=100],
+  ["🎯","১০০০ Level",data.level>=1000]
+ ];
+
+ el("achievements").innerHTML="";
+
+ items.forEach(item=>{
+  const div=document.createElement("div");
+  div.className="history-item";
+  div.textContent=item[0]+" "+item[1]+" — "+
+   (item[2]?"Unlocked ✓":"Locked 🔒");
+  el("achievements").appendChild(div);
+ });
+}
+
+function editName(){
+ const name=prompt("তোমার নাম লেখো:",data.name);
+ if(name!==null&&name.trim()){
+  data.name=name.trim().slice(0,30);
+  save();
+  updateDashboard();
+ }
+}
+
+function uploadImage(event,type){
+ const file=event.target.files[0];
+ if(!file)return;
+
+ if(!file.type.startsWith("image/")){
+  alert("শুধু Image ফাইল নির্বাচন করো।");
+  return;
+ }
+
+ if(file.size>1024*1024){
+  alert("ছবির আকার ১ MB-এর মধ্যে রাখো।");
+  return;
+ }
+
+ const reader=new FileReader();
+
+ reader.onload=()=>{
+  if(type==="avatar")data.avatar=reader.result;
+  if(type==="cover")data.cover=reader.result;
+  save();
+  updateDashboard();
+ };
+
+ reader.readAsDataURL(file);
+}
+
+function toggleTheme(){
+ data.theme=data.theme==="dark"?"light":"dark";
+ save();
+ updateDashboard();
+}
+
+function playSound(correct){
+ if(el("sound").value==="off")return;
+
+ try{
+  const AudioContextClass=window.AudioContext||
+   window.webkitAudioContext;
+  if(!AudioContextClass)return;
+
+  const ctx=new AudioContextClass();
+  const osc=ctx.createOscillator();
+  const gain=ctx.createGain();
+
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+
+  osc.frequency.value=correct?700:220;
+  gain.gain.value=.06;
+
+  osc.start();
+  osc.stop(ctx.currentTime+.15);
+ }catch(e){}
+}
+
+function changeLanguage(){
+ const language=el("language").value;
+
+ el("tagline").textContent=language==="bn"?
+  "শিখব অংক, জিতব জ্ঞান!":
+  "Learn Mathematics, Gain Knowledge!";
+
+ newQuestion();
+}
+
+function exportBackup(){
+ const blob=new Blob(
+  [JSON.stringify(data,null,2)],
+  {type:"application/json"}
+ );
+
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");
+
+ a.href=url;
+ a.download="Ongko-Shikhi-Backup.json";
+ a.click();
+
+ URL.revokeObjectURL(url);
+}
+
+function importBackup(){
+ const file=el("backupFile").files[0];
+
+ if(!file){
+  alert("আগে Backup ফাইল নির্বাচন করো।");
+  return;
+ }
+
+ const reader=new FileReader();
+
+ reader.onload=()=>{
+  try{
+   const imported=JSON.parse(reader.result);
+
+   if(!imported||
+    !Number.isFinite(imported.level)||
+    !Array.isArray(imported.history)||
+    !Array.isArray(imported.completed)){
+    throw new Error("Invalid backup");
+   }
+
+   data={
+    ...defaults,
+    ...imported,
+    level:Math.min(TOTAL_LEVELS,
+     Math.max(1,Math.floor(imported.level))),
+    score:Math.max(0,Number(imported.score)||0),
+    correct:Math.max(0,Number(imported.correct)||0),
+    attempts:Math.max(0,Number(imported.attempts)||0)
+   };
+
+   save();
+   updateDashboard();
+   renderHistory();
+   renderAchievements();
+   newQuestion();
+
+   alert("Backup Restore সফল হয়েছে!");
+  }catch(e){
+   alert("Backup ফাইলটি সঠিক নয়।");
+  }
+ };
+
+ reader.readAsText(file);
+}
+
+function clearHistory(){
+ if(confirm("History মুছে ফেলতে চাও?")){
+  data.history=[];
+  save();
+  renderHistory();
+ }
+}
+
+function resetData(){
+ if(!confirm("সব Progress ও Profile Data মুছে যাবে। নিশ্চিত?"))return;
+
+ localStorage.removeItem(STORAGE_KEY);
+ location.reload();
+}
+
+updateDashboard();
+renderHistory();
+renderAchievements();
+newQuestion();
+
+</script>
+</body>
+</html>
